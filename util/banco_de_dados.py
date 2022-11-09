@@ -111,6 +111,7 @@ class Database():
         for i in sql:
             self.executar(i, [])
 
+    
     # inserções nas tabelas
     def cadastrar_usuario(nome, email, senha, nasci):
         sql = "INSERT INTO usuario(nome, email, senha, nasci) VALUES(%s, %s, password(%s), %s);"
@@ -136,6 +137,59 @@ class Database():
         sql = "INSERT INTO compra(nota, descricao, usuario, compra) VALUES(%s, %s, %s, %s);"
         self.executar(sql, (nota, descricao, usuario, compra)
 
+
+    # consultar
+    def consultar_usuario(email, senha):
+        sql = "SELECT * FROM usuario WHERE email=%s AND senha=password($s)"
+        self.consultar(sql, (email, senha))
+
+    def consultar_cartao(id_usuario):
+        sql = "SELECT * FROM cartao WHERE usuario=%s"
+        self.consultar(sql, (id_usuario))
+
+    def consultar_endereco(id_usuario):
+        sql = "SELECT * FROM endereco WHERE usuario=%s"
+        self.consultar(sql, (id_usuario))
+
+    def consultar_produto(id_usuario):
+        sql = "SELECT * FROM produto WHERE vendedor=%s"
+        self.consultar(sql, (id_usuario))
+
+    def consultar_compra(id_usuario):
+        sql = "SELECT * FROM compra WHERE usuario=%s"
+        self.consultar(sql, (id_usuario))
+
+    def consultar_avaliacao(id_compra):
+        sql = "SELECT * FROM avaliacao WHERE compra=%s"
+        self.consultar(sql, (id_avaliacao))
+    
+    
+    # atualizar
+    def atualizar_cartao(id_cartao, numero, nome, vencimento, cvv, usuario):
+        sql = "UPDATE cartao SET numero=%s, nome=%s, vencimento=%s, cvv=%s, usuario=%s WHERE id_cartao=%s;"
+        self.executar(sql, (numero, nome, vencimento, cvv, usuario, id_cartao))
+
+    def atualizar_endereco(id_endereco, estado, cidade, bairro, rua, numero, cep, usuario):
+        sql = "UPDATE endereco SET estado=%s, cidade=%s, bairro=%s, rua=%s, numero=%s, cep=%s, usuario=%s WHERE id_endereco=%s;"
+        self.executar(sql, (estado, cidade, bairro, rua, numero, cep, usuario, id_endereco))
+
+    def remover_produto(id_produto, nome, descricao, ficha_tecnica, valor, estoque, vendedor):
+        sql = "UPDATE produto SET nome=%s, descricao=%s, ficha_tecnica=%s, valor=%s, estoque=%s, vendedor=%s WHERE id_produto=%s;"
+        self.executar(sql, (nome, descricao, ficha_tecnica, valor, estoque, vendedor, id_produto))
+
+    
+    # remoções
+    def remover_cartao(id_cartao):
+        sql = "DELETE FROM cartao WHERE id_cartao=%s;"
+        self.executar(sql, (id_cartao))
+
+    def remover_endereco(id_endereco):
+        sql = "DELETE FROM endereco WHERE id_endereco=%s;"
+        self.executar(sql, (id_endereco))
+
+    def remover_produto(id_produto):
+        sql = "DELETE FROM produto WHERE id_produto=%s;"
+        self.executar(sql, (id_produto))
 
 '''cnx = mysql.connector.connect(user='root',
                              password='99227512Biel*',
