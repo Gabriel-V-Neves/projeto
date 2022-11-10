@@ -1,3 +1,5 @@
+from util.interface import Interface
+back = Interface()
 from flask import Flask, render_template, request, session, redirect
 app = Flask(__name__)
 app.secret_key = 'super secret key'
