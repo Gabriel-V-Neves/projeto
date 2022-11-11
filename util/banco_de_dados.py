@@ -37,6 +37,16 @@ class Database():
             )"""
             ,
             """
+            create table if not exists sessao(
+                id_sessao int auto_increment primary key,
+                ip varchar(32),
+                ultimo_acesso datetime,
+                usuario int,
+                constraint fk_usuariosessao foreign key (usuario)
+                    references usuario(id_usuario)
+            )"""
+            ,
+            """
             create table if not exists cartao(
                 id_cartao int auto_increment primary key,
                 numero varchar(16),
@@ -105,8 +115,7 @@ class Database():
                     references usuario(id_usuario),
                 constraint fk_compraavaliacao foreign key (compra)
                     references compra(id_compra)
-            )"""
-            ]
+            )"""]
         
         for i in sql:
             self.executar(i, [])
@@ -140,31 +149,39 @@ class Database():
 
     # consultar
     def consultar_usuario(self, email, senha):
-        sql = "SELECT * FROM usuario WHERE email=%s AND senha=password($s)"
-        self.consultar(sql, (email, senha))
+        sql = "SELECT * FROM usuario WHERE email=%s AND senha=password(%s)"
+        return self.consultar(sql, (email, senha))
+
+    def consultar_sessao(self, ip, usuario):
+        sql = "SELECT * FROM sessao WHERE ip=%s AND usuario=%s"
+        return self.consultar(sql, (ip, usuario))
 
     def consultar_cartao(self, id_usuario):
         sql = "SELECT * FROM cartao WHERE usuario=%s"
-        self.consultar(sql, (id_usuario))
+        return self.consultar(sql, (id_usuario))
 
     def consultar_endereco(self, id_usuario):
         sql = "SELECT * FROM endereco WHERE usuario=%s"
-        self.consultar(sql, (id_usuario))
+        return self.consultar(sql, (id_usuario))
 
     def consultar_produto(self, id_usuario):
         sql = "SELECT * FROM produto WHERE vendedor=%s"
-        self.consultar(sql, (id_usuario))
+        return self.consultar(sql, (id_usuario))
 
     def consultar_compra(self, id_usuario):
         sql = "SELECT * FROM compra WHERE usuario=%s"
-        self.consultar(sql, (id_usuario))
+        return self.consultar(sql, (id_usuario))
 
     def consultar_avaliacao(self, id_compra):
         sql = "SELECT * FROM avaliacao WHERE compra=%s"
-        self.consultar(sql, (id_compra))
+        return self.consultar(sql, (id_compra))
     
     
     # atualizar
+    def atualizar_sessao(self, id_sessao, ultimo_acesso):
+        sql = "UPDATE sessao SET ultimo_acesso=%s WHERE id_sessao=%s;"
+        self.executar(sql, (ultimo_acesso, id_sessao))
+    
     def atualizar_cartao(self, id_cartao, numero, nome, vencimento, cvv, usuario):
         sql = "UPDATE cartao SET numero=%s, nome=%s, vencimento=%s, cvv=%s, usuario=%s WHERE id_cartao=%s;"
         self.executar(sql, (numero, nome, vencimento, cvv, usuario, id_cartao))
@@ -179,6 +196,10 @@ class Database():
 
     
     # remoções
+    def remover_sessao(self, id_sessao):
+        sql = "DELETE FROM sessao WHERE id_sessao=%s;"
+        self.executar(sql, (id_sessao))
+
     def remover_cartao(self, id_cartao):
         sql = "DELETE FROM cartao WHERE id_cartao=%s;"
         self.executar(sql, (id_cartao))
