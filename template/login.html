@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <title>Colocar alguma coisa aqui</title>
+</head>
+
+<body>
+
+    <div>
+        <div>
+            <form action="/login.html">
+                <label for="email">Enter your email:</label>
+                <input type="email" id="email" name="email" autofocus>
+                <label for="senha">Senha:</label><br>
+                <input type="password" id="senha" name="senha">
+                <input type="submit" value="Entrar">
+            </form>
+        </div>
+        <div>
+            <form action="/cadastro.html">
+                <label for="_nome">Nome:</label><br>
+                <input type="text" id="_nome" name="_nome"><br>
+                <label for="_email">Enter your email:</label>
+                <input type="email" id="_email" name="_email">
+                <label for="_senha1">Senha:</label><br>
+                <input type="password" id="_senha1" name="_senha1">
+                <label for="_senha2">Senha:</label><br>
+                <input type="password" id="_senha2" name="_senha2">
+                <input type="submit" value="Cadastrar-se">
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
