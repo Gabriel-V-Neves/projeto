@@ -196,9 +196,9 @@ class Database():
 
     
     # remoções
-    def remover_sessao(self, id_sessao):
-        sql = "DELETE FROM sessao WHERE id_sessao=%s;"
-        self.executar(sql, (id_sessao))
+    def remover_sessao(self, ip, usuario):
+        sql = "DELETE FROM sessao WHERE ip=%s AND usuario=%s;"
+        self.executar(sql, (ip, usuario))
 
     def remover_cartao(self, id_cartao):
         sql = "DELETE FROM cartao WHERE id_cartao=%s;"
