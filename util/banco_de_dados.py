@@ -123,9 +123,13 @@ class Database():
     
     # inserções nas tabelas
     def cadastrar_usuario(self, nome, email, senha, nasci):
-        sql = "INSERT INTO usuario(nome, email, senha, nasci) VALUES(%s, %s, password(%s), %s);"
+        sql = "INSERT INTO usuario(nome, email, senha, nasci) VALUES (%s, %s, %s, %s);"
         self.executar(sql, (nome, email, senha, nasci))
 
+    def cadastrar_sessao(self, ip, ultimo_acesso, usuario):
+        sql = "INSERT INTO sessao(ip, ultimo_acesso, usuario) VALUES(%s, %s, %s);"
+        self.executar(sql, (ip, ultimo_acesso, usuario))
+    
     def cadastrar_cartao(self, numero, nome, vencimento, cvv, usuario):
         sql = "INSERT INTO cartao(numero, nome, vencimento, cvv, usuario) VALUES(%s, %s, %s, %s, %s);"
         self.executar(sql, (numero, nome, vencimento, cvv, usuario))
@@ -148,9 +152,9 @@ class Database():
 
 
     # consultar
-    def consultar_usuario(self, email, senha):
-        sql = "SELECT * FROM usuario WHERE email=%s AND senha=password(%s)"
-        return self.consultar(sql, (email, senha))
+    def consultar_usuario(self, email):
+        sql = "SELECT * FROM usuario WHERE email=%s"
+        return self.consultar(sql, (email,))
 
     def consultar_sessao(self, ip, usuario):
         sql = "SELECT * FROM sessao WHERE ip=%s AND usuario=%s"

@@ -4,13 +4,32 @@ from flask import Flask, render_template, request, session, redirect
 app = Flask(__name__)
 app.secret_key = 'super secret key'
 
-@app.route('/')
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
 	return render_template("index.html")
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
 	return render_template("login.html")
+
+@app.route('/cadastro', methods=['GET', 'POST'])
+def cadastro():
+	nome = request.form['_nome']
+	nasci = request.form['_nasci']
+	email = request.form['_email']
+	senha = request.form['_senha']
+	cadastro = back.cadastrar_usuario(nome, nasci, email, senha)
+	print(cadastro)
+	if cadastro:
+		num_ip = request.environ['REMOTE_ADDR']
+		back.criar_sessao(num_ip, cadastro[0])
+		return redirect('/menu')
+	return redirect('/')
+
+@app.route('/menu')
+def menu():
+	return render_template("menu.html")
 
 @app.route('/produto')
 def produto():

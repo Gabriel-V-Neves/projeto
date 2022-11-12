@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <title>Colocar alguma coisa aqui</title>
+</head>
+
+<body>
+
+    <div>
+        <div>
+            <form action="/login" method="post">
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" autofocus required><br>
+                <label for="senha">Senha:</label><br>
+                <input type="password" id="senha" name="senha" required><br>
+                <input type="submit" value="Entrar">
+            </form>
+        </div>
+        <div>
+            <form action="/cadastro" method="post">
+                <label for="_nome">Nome:</label><br>
+                <input type="text" id="_nome" name="_nome" required><br>
+                <label for="_nasci">Data de nascimento:</label><br>
+                <input type="date" id="_nasci" name="_nasci"><br>
+                <label for="_email">Email:</label><br>
+                <input type="email" id="_email" name="_email" required><br>
+                <label for="_senha">Senha:</label><br>
+                <input type="password" id="_senha" name="_senha" required><br>
+                <label for="_senha1">Senha:</label><br>
+                <input type="password" id="_senha1" name="_senha1" required><br>
+                <input type="submit" value="Cadastrar-se">
+            </form>
+        </div>
+    </div>
+
+</body>
+<script>
+    var senha1 = document.getElementById("_senha")
+    ,senha2 = document.getElementById("_senha1");
+
+    function validar_senha(){
+        if(senha1.value != senha2.value) {
+            senha2.setCustomValidity("As senhas informadas não são iguais");
+        } else {
+            senha2.setCustomValidity('');
+        }
+    }
+
+senha1.onchange = validar_senha;
+senha2.onkeyup = validar_senha;
+</script>
+</html>
