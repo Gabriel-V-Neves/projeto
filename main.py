@@ -11,7 +11,14 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-	return render_template("login.html")
+	email = request.form['email']
+	senha = request.form['senha']
+	num_ip = request.environ['REMOTE_ADDR']
+	usuario = back.login(email, senha, num_ip)
+	if usuario:
+		session['id_usuario'] = usuario
+		return redirect('/home')
+	return redirect('/')
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -20,16 +27,15 @@ def cadastro():
 	email = request.form['_email']
 	senha = request.form['_senha']
 	cadastro = back.cadastrar_usuario(nome, nasci, email, senha)
-	print(cadastro)
 	if cadastro:
 		num_ip = request.environ['REMOTE_ADDR']
 		back.criar_sessao(num_ip, cadastro[0])
-		return redirect('/menu')
+		return redirect('/home')
 	return redirect('/')
 
-@app.route('/menu')
+@app.route('/home')
 def menu():
-	return render_template("menu.html")
+	return render_template("home.html")
 
 @app.route('/produto')
 def produto():
@@ -58,3 +64,30 @@ def vendas_feitas():
 @app.route('/cadastrar_produto')
 def cadastrar_produto():
 	return render_template("cadastrar_produto.html")
+
+@app.route('/cadastro_produto', methods=['GET', 'POST'])
+def cadastro_produto():
+	nome = request.form['nome']
+	descricao = request.form['descricao']
+	ficha_tecnica = request.form['ficha_tecnica']
+	valor = request.form['valor']
+	estoque = request.form['estoque']
+	#imagem_nome = request.form['imagem']
+	imagem = request.files['imagem']
+	print(imagem)
+	vendedor = session['id_usuario']
+	cadastro = back.cadastrar_produto(nome, descricao, ficha_tecnica, valor, estoque, imagem, vendedor)
+	
+	if cadastro:
+		return redirect('/produtos_cadastrados')
+
+	'''
+	if imagem and arquivo_permitido(imagem.filename):
+		cadastro = back.cadastrar_produto() #terminar
+		if cadastro:
+			nome_imagem = #id_usuario-id_produto-datetime
+			imagem.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_imagem))
+			#cadastrar url da imagem
+			return redirect('/produtos_cadastrados')'''
+	return redirect('/cadastrar_produto')
+

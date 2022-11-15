@@ -86,6 +86,15 @@ class Database():
             )"""
             ,
             """
+            create table if not exists imagem(
+                id_imagem int auto_increment primary key,
+                diretorio varchar(50),
+                produto int,
+                constraint fk_produtoimagem foreign key (produto)
+                    references produto(id_produto)
+            )""" 
+            ,
+            """
             create table if not exists compra(
                 id_compra int auto_increment primary key,
                 quantidade int,
@@ -142,6 +151,10 @@ class Database():
         sql = "INSERT INTO produto(nome, descricao, ficha_tecnica, valor, estoque, vendedor) VALUES(%s, %s, %s, %s, %s, %s);"
         self.executar(sql, (nome, descricao, ficha_tecnica, valor, estoque, vendedor))
 
+    def cadastrar_imagem(self, diretorio, id_produto):
+        sql = "INSERT INTO imagem(diretorio, produto) VALUES(%s, %s);"
+        self.executar(sql, (diretorio, id_produto))
+
     def cadastrar_compra(self, quantidade, total, usuario, cartao, endereco, produto):
         sql = "INSERT INTO compra(quantidade, total, usuario, cartao, endereco, produto) VALUES(%s, %s, %s, %s, %s, %s);"
         self.executar(sql, (quantidade, total, usuario, cartao, endereco, produto))
@@ -162,23 +175,23 @@ class Database():
 
     def consultar_cartao(self, id_usuario):
         sql = "SELECT * FROM cartao WHERE usuario=%s"
-        return self.consultar(sql, (id_usuario))
+        return self.consultar(sql, (id_usuario,))
 
     def consultar_endereco(self, id_usuario):
         sql = "SELECT * FROM endereco WHERE usuario=%s"
-        return self.consultar(sql, (id_usuario))
+        return self.consultar(sql, (id_usuario,))
 
     def consultar_produto(self, id_usuario):
         sql = "SELECT * FROM produto WHERE vendedor=%s"
-        return self.consultar(sql, (id_usuario))
+        return self.consultar(sql, (id_usuario,))
 
     def consultar_compra(self, id_usuario):
         sql = "SELECT * FROM compra WHERE usuario=%s"
-        return self.consultar(sql, (id_usuario))
+        return self.consultar(sql, (id_usuario,))
 
     def consultar_avaliacao(self, id_compra):
         sql = "SELECT * FROM avaliacao WHERE compra=%s"
-        return self.consultar(sql, (id_compra))
+        return self.consultar(sql, (id_compra,))
     
     
     # atualizar

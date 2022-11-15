@@ -1,1 +1,103 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+body{
+    background-color: white;
+    margin: 0;
+}
+
+.header{
+    background-color: #eedfb4;
+    padding: 2em;
+    padding-left: 10%;
+    color: darkslategray;
+}
+
+.topnav{
+    background-color: #f4c440;
+    float: left;
+    padding-left: 10%;
+    overflow: hidden;
+    width: 90%;
+    position: sticky;
+}
+
+.topnav a{
+    float: left;
+    padding: 1em 2em;
+    color:darkslategray;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.topnav a:hover{
+    background-color: #a59a7b;
+}
+
+.conteudo{
+    width: 80%;
+    padding: auto;
+    margin: 10%;
+    min-height: 45vh;
+}
+
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+  
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other on smaller screens (600px wide or less) */
+@media screen and (max-width: 600px) {
+.column {
+        width: 100%;
+    }
+}
+
+.footer{
+    background-color: #a59a7b;
+    min-height: 10vh;
+}
+
+.preenchimento{
+    margin-bottom: 0.5em;
+    background-color: lightgray;
+    border-style: none;
+    color: #333333;
+    padding: 0.3em;
+    border-radius: 0.3em;
+}
+
+.tag{
+    color: #333333;
+    font-size: small;
+    font-weight: 500;
+}
+
+input[type="submit" i] {
+    padding: 0.3em 1.5em;
+    width: auto;
+    margin-top: 1em;
+    color: white;
+    font-size: medium;
+    font-weight: 600;
+    background-color: darkcyan;
+    border-style: none;
+    border-radius: 0.3em;
+}
+
+input[type="submit" i]:hover{
+    color: darkslategray;
+    cursor: pointer;
+}
+
+h4{
+    color: darkslategray;
+}
+
+textarea{
+    width: 100%;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <title>Colocar alguma coisa aqui</title>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1 style="margin-bottom: 0; font-weight: 100; font-size: xx-large; padding-bottom: 0;">Online</h1>
+        <h1 style="margin-top: 0; font-weight: 900;">SHOPPING</h1>
+    </div>
+    <div class="topnav">
+        <a href="/home">Home</a>
+        <a href="/minhas_compras">Minhas compras</a>
+        <a href="/meus_dados">Meus dados</a>
+        <a href="/produtos_cadastrados">Produtos cadastrados</a>
+        <a href="/vendas_feitas">Vendas feitas</a>
+    </div>
+    <div class="conteudo">
+        <div style="float: left; width: 50%; display: flex; justify-content: center; align-items: center;">
+            <form action="/cadastro_produto" method="post" enctype="multipart/form-data">
+                <label class="tag" for="nome">NOME</label><br>
+                <input class="preenchimento" type="text" id="nome" name="nome" required><br>
+                <label class="tag" for="descricao">DESCRIÇÃO</label><br>
+                <textarea class="preenchimento" id="descricao" name="descricao" required></textarea><br>
+                <label class="tag" for="ficha_tecnica">FICHA TÉCNICA</label><br>
+                <textarea class="preenchimento" id="ficha_tecnica" name="ficha_tecnica" required></textarea><br>
+                <label class="tag" for="valor">VALOR</label><br>
+                <input class="preenchimento" type="number" step=".01" id="valor" name="valor" required><br>
+                <label class="tag" for="estoque">ESTOQUE</label><br>
+                <input class="preenchimento" type="number" id="estoque" name="estoque"><br>
+                <label class="tag" for="imagem">IMAGEM</label><br>
+                <input class="preenchimento" type="file" accept="image/*" id="imagem" name="imagem" required><br>
+                <input class="botao" type="submit" value="Cadastrar produto">
+            </form>
+        </div>
+    </div>
+    <div class="footer"></div>
+
+</body>
+</html>

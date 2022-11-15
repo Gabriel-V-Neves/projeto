@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <title>Colocar alguma coisa aqui</title>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1 style="margin-bottom: 0; font-weight: 100; font-size: xx-large; padding-bottom: 0;">Online</h1>
+        <h1 style="margin-top: 0; font-weight: 900;">SHOPPING</h1>
+    </div>
+    <div class="topnav">
+        <a href="/home">Home</a>
+        <a href="/minhas_compras">Minhas compras</a>
+        <a href="/meus_dados">Meus dados</a>
+        <a href="/produtos_cadastrados">Produtos cadastrados</a>
+        <a href="/vendas_feitas">Vendas feitas</a>
+    </div>
+    <div class="conteudo">
+        <div style="float: left; width: 50%; display: flex; justify-content: center; align-items: center;">
+            <form action="/cadastro_endereco" method="post">
+                <label class="tag" for="cep">CEP</label><br>
+                <input class="preenchimento" type="number" id="cep" name="cep" required><br>
+                <label class="tag" for="estado">ESTADO</label><br>
+                <input class="preenchimento" type="text" id="estado" name="estado" required><br>
+                <label class="tag" for="cidade">CIDADE</label><br>
+                <input class="preenchimento" type="text" id="cidade" name="cidade" required><br>
+                <label class="tag" for="bairro">BAIRRO</label><br>
+                <input class="preenchimento" type="text" id="bairro" name="bairro" required><br>
+                <label class="tag" for="rua">RUA</label><br>
+                <input class="preenchimento" type="text" id="rua" name="rua"><br>
+                <label class="tag" for="numero">NÚMERO</label><br>
+                <input class="preenchimento" type="text" id="numero" name="numero" required><br>
+                <label class="tag" for="commplemento">COMPLEMENTO</label><br>
+                <input class="preenchimento" type="text" id="complemento" name="complemento"><br>
+                <input class="botao" type="submit" value="Cadastrar endereço">
+            </form>
+        </div>
+        <div style="float: left; width: 50%; display: flex; justify-content: center; align-items: center;">
+            <form action="/cadastro_cartao" method="post">
+                <label class="tag" for="nome">NOME DO TITULAR</label><br>
+                <input class="preenchimento" type="text" id="nome" name="nome" required><br>
+                <label class="tag" for="cpf">CPF DO TITULAR</label><br>
+                <input class="preenchimento" type="number" id="cpf" name="cpf" required><br>
+                <label class="tag" for="numero">NÚMERO DO CARTÃO</label><br>
+                <input class="preenchimento" type="number" id="numero" name="numero" required><br>
+                <label class="tag" for="vencimento">VENCIMENTO</label><br>
+                <input class="preenchimento" type="date" id="vencimento" name="vencimento" required><br>
+                <label class="tag" for="cvv">CVV</label><br>
+                <input class="preenchimento" type="number" id="cvv" name="cvv"><br>
+                <input class="botao" type="submit" value="Cadastrar cartão">
+            </form>
+        </div>
+    </div>
+    <div class="conteudo">
+        <div style="float: left; width: 40%; padding: 0 2em;">
+            <h4>Endereços cadastrados</h4><br>
+        </div>
+        <div style="float: right; width: 40%; padding: 0 2em;">
+            <h4>Cartões cadastrados</h4><br>
+        </div>
+    </div>
+    <div class="footer"></div>
+
+</body>
+</html>

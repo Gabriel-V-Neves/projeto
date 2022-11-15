@@ -3,35 +3,37 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="{{ url_for('static',filename='styles/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/login.css') }}">
     <title>Colocar alguma coisa aqui</title>
 </head>
 
 <body>
 
-    <div>
-        <div>
+    <div class="container">
+        <div class="quadro_login">
+            <h1> Entre com sua conta</h1>
             <form action="/login" method="post">
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" autofocus required><br>
-                <label for="senha">Senha:</label><br>
-                <input type="password" id="senha" name="senha" required><br>
-                <input type="submit" value="Entrar">
+                <label class="tag" for="email">EMAIL</label><br>
+                <input class="preenchimento" type="email" id="email" name="email" autofocus required><br>
+                <label class="tag" for="senha">SENHA</label><br>
+                <input class="preenchimento" type="password" id="senha" name="senha" required><br>
+                <input class="botao" type="submit" value="Entrar">
             </form>
         </div>
-        <div>
+        <div class="quadro_login">
+            <h1> Crie a sua conta</h1>
             <form action="/cadastro" method="post">
-                <label for="_nome">Nome:</label><br>
-                <input type="text" id="_nome" name="_nome" required><br>
-                <label for="_nasci">Data de nascimento:</label><br>
-                <input type="date" id="_nasci" name="_nasci"><br>
-                <label for="_email">Email:</label><br>
-                <input type="email" id="_email" name="_email" required><br>
-                <label for="_senha">Senha:</label><br>
-                <input type="password" id="_senha" name="_senha" required><br>
-                <label for="_senha1">Senha:</label><br>
-                <input type="password" id="_senha1" name="_senha1" required><br>
-                <input type="submit" value="Cadastrar-se">
+                <label class="tag" for="_nome">NOME</label><br>
+                <input class="preenchimento" type="text" id="_nome" name="_nome" required><br>
+                <label class="tag" for="_nasci">DATA DE NASCIMENTO</label><br>
+                <input class="preenchimento" type="date" id="_nasci" name="_nasci"><br>
+                <label class="tag" for="_email">EMAIL</label><br>
+                <input class="preenchimento" type="email" id="_email" name="_email" required><br>
+                <label class="tag" for="_senha">SENHA</label><br>
+                <input class="preenchimento" type="password" id="_senha" name="_senha" required><br>
+                <label class="tag" for="_senha1">CONFIRMAR SENHA</label><br>
+                <input class="preenchimento" type="password" id="_senha1" name="_senha1" required><br>
+                <input class="botao" type="submit" value="Cadastrar-se">
             </form>
         </div>
     </div>
