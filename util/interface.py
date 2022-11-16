@@ -7,7 +7,7 @@ import os
 
 class Interface():
     def __init__(self):
-        self.bd = Database('root', '99227512Biel*', 'localhost', 'projeto')
+        self.bd = Database('root', '99227512Biel*', 'localhost', 'projeto') #12345678
 
     def cadastrar_usuario(self, nome, nasci, email, senha):
         consulta = self.bd.consultar_usuario(email)
@@ -31,11 +31,10 @@ class Interface():
         return False
     
     def login(self, email, senha, ip):
-        consulta = self.bd.consultar_usuario(email)[0] #[id, nome, email, senha, nasci]
-        print(consulta)
-        if consulta!=[] and consulta[2]==email and self.comparar_senha(senha, consulta[3]): #adicionar validador
-            self.criar_sessao(ip, consulta[0])
-            return consulta[0]
+        consulta = self.bd.consultar_usuario(email) #[id, nome, email, senha, nasci]
+        if consulta!=[] and consulta[0][2]==email and self.comparar_senha(senha, consulta[0][3]): #adicionar validador
+            self.criar_sessao(ip, consulta[0][0])
+            return consulta[0][0]
         return False
 
     def logout(self, ip, usuario):
@@ -66,3 +65,23 @@ class Interface():
     def arquivo_permitido(self, filename):
         extensoes_permitidas = {'png', 'jpg', 'jpeg', 'gif'}
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in extensoes_permitidas
+
+    def cadastrar_endereco(self, cep, estado, cidade, bairro, rua, numero, complemento, id_usuario):
+        self.bd.cadastrar_endereco(estado, cidade, bairro, rua, numero, cep, id_usuario)
+
+    def consultar_endereco(self, id_usuario):
+        return self.bd.consultar_endereco(id_usuario)
+    
+    def cadastrar_cartao(self, numero, nome, cpf, vencimento, cvv, usuario):
+        self.bd.cadastrar_cartao(numero, nome, cpf, vencimento, cvv, usuario)
+
+    def consultar_cartao(self, id_usuario):
+        consulta = self.bd.consultar_cartao(id_usuario)
+        for i in range(len(consulta)):
+            consulta[i] = 'XXXx xxxx xxxx '+consulta[i][-4:]
+    
+    def cadastrar_compra(self, quantidade, valor, id_usuario, id_cartao, id_endereco, id_produto):
+        self.bd.cadastrar_compra(quantidade, quantidade*valor, id_usuario, id_cartao, id_endereco, id_produto)
+
+    def consultar_compras(self, id_usuario):
+        return self.bd.cadastrar_compras(id_usuario)

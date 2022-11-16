@@ -51,6 +51,7 @@ class Database():
                 id_cartao int auto_increment primary key,
                 numero varchar(16),
                 nome varchar(50),
+                cpf varchar(11),
                 vencimento date,
                 cvv int,
                 usuario int,
@@ -139,9 +140,9 @@ class Database():
         sql = "INSERT INTO sessao(ip, ultimo_acesso, usuario) VALUES(%s, %s, %s);"
         self.executar(sql, (ip, ultimo_acesso, usuario))
     
-    def cadastrar_cartao(self, numero, nome, vencimento, cvv, usuario):
-        sql = "INSERT INTO cartao(numero, nome, vencimento, cvv, usuario) VALUES(%s, %s, %s, %s, %s);"
-        self.executar(sql, (numero, nome, vencimento, cvv, usuario))
+    def cadastrar_cartao(self, numero, nome, cpf, vencimento, cvv, usuario):
+        sql = "INSERT INTO cartao(numero, nome, cpf, vencimento, cvv, usuario) VALUES(%s, %s, %s, %s, %s, %s);"
+        self.executar(sql, (numero, nome, cpf, vencimento, cvv, usuario))
     
     def cadastrar_endereco(self, estado, cidade, bairro, rua, numero, cep, usuario):
         sql = "INSERT INTO endereco(estado, cidade, bairro, rua, numero, cep, usuario) VALUES(%s, %s, %s, %s, %s, %s, %s);"
@@ -185,7 +186,7 @@ class Database():
         sql = "SELECT * FROM produto WHERE vendedor=%s"
         return self.consultar(sql, (id_usuario,))
 
-    def consultar_compra(self, id_usuario):
+    def consultar_compras(self, id_usuario):
         sql = "SELECT * FROM compra WHERE usuario=%s"
         return self.consultar(sql, (id_usuario,))
 

@@ -49,6 +49,28 @@ def compra():
 def meus_dados():
 	return render_template("meus_dados.html")
 
+@app.route('/cadastro_endereco', methods=['GET', 'POST'])
+def cadastro_endereco():
+	cep = request.form['cep']
+	estado = request.form['estado']
+	cidade = request.form['cidade']
+	bairro = request.form['bairro']
+	rua = request.form['rua']
+	numero = request.form['numero']
+	complemento = request.form['complemento']
+	back.cadastrar_endereco(cep, estado, cidade, bairro, rua, numero, complemento, session['id_usuario'])
+	return redirect('meus_dados')
+
+@app.route('/cadastro_cartao', methods=['GET', 'POST'])
+def cadastro_cartao():
+	nome = request.form['nome']
+	cpf = request.form['cpf']
+	numero = request.form['numero']
+	vencimento = request.form['vencimento']
+	cvv = request.form['cvv']
+	back.cadastrar_cartao(numero, nome, cpf, vencimento, cvv, session['id_usuario'])
+	return redirect('meus_dados')
+
 @app.route('/minhas_compras')
 def minhas_compras():
 	return render_template("minhas_compras.html")
