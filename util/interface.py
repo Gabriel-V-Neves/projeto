@@ -78,14 +78,13 @@ class Interface():
     def consultar_cartao(self, id_usuario):
         consulta = self.bd.consultar_cartao(id_usuario)
         for i in range(len(consulta)):
-            novo_numero = 'XXXX XXXX XXXX '+consulta[i][1][-4:]
-            linha = [*consulta[i]]
-            print(linha)
-            linha[1] = novo_numero
-            consulta[1] = linha
+            consulta[i] = list(consulta[i])
+            consulta[i][1] = 'XXXX XXXX XXXX '+consulta[i][1][-4:]
+        # tratamento para html
     
     def cadastrar_compra(self, quantidade, valor, id_usuario, id_cartao, id_endereco, id_produto):
         self.bd.cadastrar_compra(quantidade, quantidade*valor, id_usuario, id_cartao, id_endereco, id_produto)
 
     def consultar_compras(self, id_usuario):
+        # tratamento para html
         return self.bd.cadastrar_compras(id_usuario)
