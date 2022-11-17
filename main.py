@@ -47,7 +47,10 @@ def compra():
 
 @app.route('/meus_dados')
 def meus_dados():
-	return render_template("meus_dados.html")
+	id_usuario = session['id_usuario']
+	enderecos = back.consultar_endereco(id_usuario)
+	cartoes = back.consultar_cartao(id_usuario)
+	return render_template("meus_dados.html", enderecos=enderecos, cartoes=cartoes)
 
 @app.route('/cadastro_endereco', methods=['GET', 'POST'])
 def cadastro_endereco():

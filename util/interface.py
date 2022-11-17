@@ -78,7 +78,11 @@ class Interface():
     def consultar_cartao(self, id_usuario):
         consulta = self.bd.consultar_cartao(id_usuario)
         for i in range(len(consulta)):
-            consulta[i] = 'XXXx xxxx xxxx '+consulta[i][-4:]
+            novo_numero = 'XXXX XXXX XXXX '+consulta[i][1][-4:]
+            linha = [*consulta[i]]
+            print(linha)
+            linha[1] = novo_numero
+            consulta[1] = linha
     
     def cadastrar_compra(self, quantidade, valor, id_usuario, id_cartao, id_endereco, id_produto):
         self.bd.cadastrar_compra(quantidade, quantidade*valor, id_usuario, id_cartao, id_endereco, id_produto)

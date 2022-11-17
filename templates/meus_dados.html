@@ -59,12 +59,47 @@
     <div class="conteudo">
         <div style="float: left; width: 40%; padding: 0 2em;">
             <h4>Endereços cadastrados</h4><br>
+            <table id="enderecos"></table>
         </div>
         <div style="float: right; width: 40%; padding: 0 2em;">
             <h4>Cartões cadastrados</h4><br>
+            <table id="cartoes"></table>
         </div>
     </div>
     <div class="footer"></div>
 
 </body>
+<script>
+enderecos = {{enderecos|safe}};
+cartoes   = {{cartoes|safe}};
+
+function inserir_dados() {
+    local_enderecos = document.getElementsById('enderecos')
+    local_cartoes = document.getElementsById('cartoes')
+
+    insercoes = []
+    for (let i=0; i<enderecos.length; i++) {
+        insercoes.push(
+            '<tr>'+enderecos[i]+'</tr>'
+        )
+    }
+    insercoes = insercoes.join('')
+    local_enderecos.innerHTML = insercoes
+
+    insercoes = []
+    for (let i=0; i<cartoes.length; i++) {
+        insercoes.push(
+            '<tr>'+cartoes[i]+'</tr>'
+        )
+    }
+    insercoes = insercoes.join('')
+    local_cartoes.innerHTML = insercoes
+
+}
+
+window.onload = function() {
+    inserir_dados()
+};
+
+</script>
 </html>
