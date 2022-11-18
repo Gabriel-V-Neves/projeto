@@ -186,6 +186,14 @@ class Database():
         sql = "SELECT * FROM produto WHERE vendedor=%s"
         return self.consultar(sql, (id_usuario,))
 
+    def consultar_todos_produtos(self):
+        sql = "SELECT * FROM produto"
+        return self.consultar(sql, ())
+
+    def consultar_imagem(self, id_usuario):
+        sql = "SELECT diretorio FROM imagem WHERE produto=%s"
+        return self.consultar(sql, (id_usuario,))
+
     def consultar_compras(self, id_usuario):
         sql = "SELECT * FROM compra WHERE usuario=%s"
         return self.consultar(sql, (id_usuario,))

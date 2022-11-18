@@ -35,7 +35,8 @@ def cadastro():
 
 @app.route('/home')
 def menu():
-	return render_template("home.html")
+	produtos = back.consultar_todos_produtos()
+	return render_template("home.html", produtos=produtos)
 
 @app.route('/produto')
 def produto():
@@ -80,7 +81,9 @@ def minhas_compras():
 
 @app.route('/produtos_cadastrados')
 def produtos_cadastrados():
-	return render_template("produtos_cadastrados.html")
+	id_usuario = session['id_usuario']
+	produtos = back.consultar_produtos(id_usuario)
+	return render_template("produtos_cadastrados.html", produtos=produtos)
     
 @app.route('/vendas_feitas')
 def vendas_feitas():

@@ -63,24 +63,58 @@ class Interface():
         return False
  
     def arquivo_permitido(self, filename):
-        extensoes_permitidas = {'png', 'jpg', 'jpeg', 'gif'}
+        extensoes_permitidas = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in extensoes_permitidas
 
     def cadastrar_endereco(self, cep, estado, cidade, bairro, rua, numero, complemento, id_usuario):
         self.bd.cadastrar_endereco(estado, cidade, bairro, rua, numero, cep, id_usuario)
 
     def consultar_endereco(self, id_usuario):
-        return self.bd.consultar_endereco(id_usuario)
+        consulta =  self.bd.consultar_endereco(id_usuario)
+        if consulta == []:
+            return '<p>Não há endereços cadastrados</p>'
+        for i in range(len(consulta)):
+            consulta[i] = list(consulta[i])
+        
+        html = ""
+        j = 0
+        for i in consulta:
+            html += """
+                <tr>
+                    <th>{}</th>
+                    <th>{}</th>
+                    <th>{}</th>
+                    <th>{}</th>
+                    <th>{}</th>
+                    <th>{}</th>
+                    <th><button onclick="remover_endereco({})">remover</button></th>
+                </tr>
+            """.format(i[3], i[4], i[5], i[2], i[1], i[6], j)
+            j += 1
+        return html
     
     def cadastrar_cartao(self, numero, nome, cpf, vencimento, cvv, usuario):
         self.bd.cadastrar_cartao(numero, nome, cpf, vencimento, cvv, usuario)
 
     def consultar_cartao(self, id_usuario):
         consulta = self.bd.consultar_cartao(id_usuario)
+        if consulta == []:
+            return '<p>Não há cartões cadastrados</p>'
         for i in range(len(consulta)):
             consulta[i] = list(consulta[i])
             consulta[i][1] = 'XXXX XXXX XXXX '+consulta[i][1][-4:]
-        # tratamento para html
+
+        html = ""
+        j = 0
+        for i in consulta:
+            html += """
+                <tr>
+                    <th>{}</th>
+                    <th><button onclick="remover_cartao({})">remover</button></th>
+                </tr>
+            """.format(i[1], j)
+            j += 1
+        return html
     
     def cadastrar_compra(self, quantidade, valor, id_usuario, id_cartao, id_endereco, id_produto):
         self.bd.cadastrar_compra(quantidade, quantidade*valor, id_usuario, id_cartao, id_endereco, id_produto)
@@ -88,3 +122,46 @@ class Interface():
     def consultar_compras(self, id_usuario):
         # tratamento para html
         return self.bd.cadastrar_compras(id_usuario)
+
+    def consultar_produtos(self, id_usuario):
+        consulta = self.bd.consultar_produto(id_usuario)
+        if consulta == []:
+            return '<p>Não há produtos cadastrados.</p>'
+        for i in range(len(consulta)):
+            consulta[i] = list(consulta[i])
+            consulta[i][0] = self.bd.consultar_imagem(consulta[i][0])[0][0]
+
+        html = ""
+        j = 0
+        for i in consulta:
+            html += """
+                <div>
+                    <image src="static/imagens_produtos/{}">
+                    <h4>{}</h4>
+                    <button onclick="editar_produto({})">EDITAR</button>
+                    <button onclick="remover_produto({})">REMOVER</button>
+                </div>
+            """.format(i[0], i[1], j, j)
+            j += 1
+        return html
+
+    def consultar_todos_produtos(self):
+        consulta = self.bd.consultar_todos_produtos()
+        if consulta == []:
+            return '<p>Não há produtos cadastrados.</p>'
+        for i in range(len(consulta)):
+            consulta[i] = list(consulta[i])
+            consulta[i][2] = self.bd.consultar_imagem(consulta[i][0])[0][0]
+
+        html = ""
+        j = 0
+        for i in consulta:
+            html += """
+                <div onclick="in_para_produto({})">
+                    <image src="static/imagens_produtos/{}">
+                    <h4>{}</h4>
+                    <h4>{}</h4>
+                </div>
+            """.format(i[0], i[2], i[1], i[4])
+            j += 1
+        return html

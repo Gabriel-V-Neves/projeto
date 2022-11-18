@@ -77,7 +77,7 @@ body{
     font-weight: 500;
 }
 
-input[type="submit" i] {
+input[type="submit" i]{
     padding: 0.3em 1.5em;
     width: auto;
     margin-top: 1em;
@@ -89,7 +89,26 @@ input[type="submit" i] {
     border-radius: 0.3em;
 }
 
+
 input[type="submit" i]:hover{
+    color: darkslategray;
+    cursor: pointer;
+}
+
+.botao_verde{
+    padding: 0.3em 1.5em;
+    width: auto;
+    margin-top: 1em;
+    color: white;
+    font-size: medium;
+    font-weight: 600;
+    background-color: darkcyan;
+    border-style: none;
+    border-radius: 0.3em;
+    text-decoration: none;
+}
+
+.botao_verde:hover{
     color: darkslategray;
     cursor: pointer;
 }
