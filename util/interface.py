@@ -87,7 +87,7 @@ class Interface():
                     <th>{}</th>
                     <th>{}</th>
                     <th>{}</th>
-                    <th><button onclick="remover_endereco({})">remover</button></th>
+                    <th><button class="botao_vermelho" onclick="remover_endereco({})">remover</button></th>
                 </tr>
             """.format(i[3], i[4], i[5], i[2], i[1], i[6], j)
             j += 1
@@ -110,7 +110,7 @@ class Interface():
             html += """
                 <tr>
                     <th>{}</th>
-                    <th><button onclick="remover_cartao({})">remover</button></th>
+                    <th><button class="botao_vermelho" onclick="remover_cartao({})">remover</button></th>
                 </tr>
             """.format(i[1], j)
             j += 1
@@ -135,11 +135,11 @@ class Interface():
         j = 0
         for i in consulta:
             html += """
-                <div>
+                <div class="produto_home">
                     <image src="static/imagens_produtos/{}">
-                    <h4>{}</h4>
-                    <button onclick="editar_produto({})">EDITAR</button>
-                    <button onclick="remover_produto({})">REMOVER</button>
+                    <h4 class="titulo_home">{}</h4>
+                    <button class="botao_verde" onclick="editar_produto({})">EDITAR</button>
+                    <button class="botao_vermelho" onclick="remover_produto({})">REMOVER</button>
                 </div>
             """.format(i[0], i[1], j, j)
             j += 1
@@ -154,14 +154,17 @@ class Interface():
             consulta[i][2] = self.bd.consultar_imagem(consulta[i][0])[0][0]
 
         html = ""
-        j = 0
         for i in consulta:
             html += """
-                <div onclick="in_para_produto({})">
+                <div class="produto_home" onclick="in_para_produto({})">
                     <image src="static/imagens_produtos/{}">
-                    <h4>{}</h4>
-                    <h4>{}</h4>
+                    <h3 class="titulo_home">{}</h3>
+                    <h4 class="preco_home">R${}</h4>
                 </div>
             """.format(i[0], i[2], i[1], i[4])
-            j += 1
         return html
+
+    def produto_especifico(self, produto_id):
+            consulta = self.bd.produto_especifico(produto_id)
+            # tratar para html
+            return

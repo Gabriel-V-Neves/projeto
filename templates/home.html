@@ -26,4 +26,20 @@
     <div class="footer"></div>
 
 </body>
+<script>
+    function fazerJogada(selecao) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/produto';
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'produto_selecionado';
+        hiddenField.value = produto_selecionado;
+
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </html>

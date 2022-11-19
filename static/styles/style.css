@@ -2,6 +2,7 @@
 
 *{
     font-family: 'Poppins', sans-serif;
+    color: #333333;
 }
 
 body{
@@ -60,6 +61,7 @@ body{
 .footer{
     background-color: #a59a7b;
     min-height: 10vh;
+    margin-top: 15em;
 }
 
 .preenchimento{
@@ -98,7 +100,6 @@ input[type="submit" i]:hover{
 .botao_verde{
     padding: 0.3em 1.5em;
     width: auto;
-    margin-top: 1em;
     color: white;
     font-size: medium;
     font-weight: 600;
@@ -113,6 +114,23 @@ input[type="submit" i]:hover{
     cursor: pointer;
 }
 
+.botao_vermelho{
+    padding: 0.3em 1.5em;
+    width: auto;
+    color: white;
+    font-size: medium;
+    font-weight: 600;
+    background-color: rgb(141, 26, 26);
+    border-style: none;
+    border-radius: 0.3em;
+    text-decoration: none;
+}
+
+.botao_vermelho:hover{
+    color: gray;
+    cursor: pointer;
+}
+
 h4{
     color: darkslategray;
 }
@@ -120,3 +138,38 @@ h4{
 textarea{
     width: 100%;
 }
+
+th{
+    font-weight: 500;
+}
+
+.produto_home{
+    border: 1px solid #333333;
+    cursor: pointer;
+    border-radius: 0.3em;
+    width: 25%;
+    height: 25%;
+    margin: 3%;
+    padding: 1em;
+    float: left;
+}
+
+.produto_home:hover{
+    border: 3px solid #333333;
+}
+
+img{
+    max-width: 100%;
+    max-height: 100vh; 
+}
+
+.titulo_home{
+    color: #333333;
+    margin-bottom: 0.1em;
+}
+
+.preco_home{
+    color: darkcyan;
+    margin: 0;
+}
+

@@ -185,7 +185,11 @@ class Database():
     def consultar_produto(self, id_usuario):
         sql = "SELECT * FROM produto WHERE vendedor=%s"
         return self.consultar(sql, (id_usuario,))
-
+        
+    def produto_especifico(self, id_produto):
+        sql = "SELECT * FROM produto WHERE id_produto=%s"
+        return self.consultar(sql, (id_produto,))
+        
     def consultar_todos_produtos(self):
         sql = "SELECT * FROM produto"
         return self.consultar(sql, ())

@@ -40,7 +40,10 @@ def menu():
 
 @app.route('/produto')
 def produto():
-	return render_template("produto.html")
+	produto_selecionado = session['produto_selecionaddo']
+	produto = back.produto_especifico(produto_selecionado)
+	return render_template("produto.html", produto=produto)
+
     
 @app.route('/compra')
 def compra():
