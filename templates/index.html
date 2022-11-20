@@ -24,15 +24,15 @@
             <h1> Crie a sua conta</h1>
             <form action="/cadastro" method="post">
                 <label class="tag" for="_nome">NOME</label><br>
-                <input class="preenchimento" type="text" id="_nome" name="_nome" required><br>
+                <input class="preenchimento" type="text" maxlength="50" id="_nome" name="_nome" required><br>
                 <label class="tag" for="_nasci">DATA DE NASCIMENTO</label><br>
                 <input class="preenchimento" type="date" id="_nasci" name="_nasci"><br>
                 <label class="tag" for="_email">EMAIL</label><br>
-                <input class="preenchimento" type="email" id="_email" name="_email" required><br>
+                <input class="preenchimento" type="email" maxlength="50" id="_email" name="_email" required><br>
                 <label class="tag" for="_senha">SENHA</label><br>
                 <input class="preenchimento" type="password" id="_senha" name="_senha" required><br>
                 <label class="tag" for="_senha1">CONFIRMAR SENHA</label><br>
-                <input class="preenchimento" type="password" id="_senha1" name="_senha1" required><br>
+                <input class="preenchimento" type="password" maxlength="50" id="_senha1" name="_senha1" required><br>
                 <input class="botao" type="submit" value="Cadastrar-se">
             </form>
         </div>

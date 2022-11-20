@@ -24,11 +24,11 @@
         <div style="float: left; width: 50%; display: flex; justify-content: center; align-items: center;">
             <form action="/cadastro_produto" method="post" enctype="multipart/form-data">
                 <label class="tag" for="nome">NOME</label><br>
-                <input class="preenchimento" type="text" id="nome" name="nome" required><br>
+                <input class="preenchimento" type="text" maxlength="50" id="nome" name="nome" required><br>
                 <label class="tag" for="descricao">DESCRIÇÃO</label><br>
-                <textarea class="preenchimento" id="descricao" name="descricao" required></textarea><br>
+                <textarea class="preenchimento" maxlength="500" id="descricao" name="descricao" required></textarea><br>
                 <label class="tag" for="ficha_tecnica">FICHA TÉCNICA</label><br>
-                <textarea class="preenchimento" id="ficha_tecnica" name="ficha_tecnica" required></textarea><br>
+                <textarea class="preenchimento" maxlength="500" id="ficha_tecnica" name="ficha_tecnica" required></textarea><br>
                 <label class="tag" for="valor">VALOR</label><br>
                 <input class="preenchimento" type="number" step=".01" id="valor" name="valor" required><br>
                 <label class="tag" for="estoque">ESTOQUE</label><br>

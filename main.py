@@ -38,9 +38,9 @@ def menu():
 	produtos = back.consultar_todos_produtos()
 	return render_template("home.html", produtos=produtos)
 
-@app.route('/produto')
+@app.route('/produto', methods=['GET', 'POST'])
 def produto():
-	produto_selecionado = session['produto_selecionaddo']
+	produto_selecionado = request.form['produto_selecionado']
 	produto = back.produto_especifico(produto_selecionado)
 	return render_template("produto.html", produto=produto)
 

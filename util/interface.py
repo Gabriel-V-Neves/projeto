@@ -156,7 +156,7 @@ class Interface():
         html = ""
         for i in consulta:
             html += """
-                <div class="produto_home" onclick="in_para_produto({})">
+                <div class="produto_home" onclick="ir_para_produto({})">
                     <image src="static/imagens_produtos/{}">
                     <h3 class="titulo_home">{}</h3>
                     <h4 class="preco_home">R${}</h4>
@@ -165,6 +165,21 @@ class Interface():
         return html
 
     def produto_especifico(self, produto_id):
-            consulta = self.bd.produto_especifico(produto_id)
-            # tratar para html
-            return
+        consulta = self.bd.produto_especifico(produto_id)[0]
+        consulta = list(consulta)
+        print(consulta)
+        consulta[5] = self.bd.consultar_imagem(consulta[0])[0][0]
+
+        html = """
+            <div class="produto_home">
+                <h3 class="titulo_home">{}</h3>
+                <image src="static/imagens_produtos/{}">
+                <h4 class="preco_home">R${}</h4>
+                <button class="botao_verde" onclick="pagina_compra({})">COMPRAR</button>
+                <h4>Descrição</h4>
+                <p>{}</p>
+                <h4>Ficha Técnica</h4>
+                <p>{}</p>
+            </div>
+        """.format(consulta[1], consulta[5], consulta[4], consulta[0], consulta[2], consulta[3])
+        return html

@@ -24,17 +24,17 @@
         <div style="float: left; width: 50%; display: flex; justify-content: center; align-items: center;">
             <form action="/cadastro_endereco" method="post">
                 <label class="tag" for="cep">CEP</label><br>
-                <input class="preenchimento" type="number" id="cep" name="cep" required><br>
+                <input class="preenchimento" type="number" maxlength="8" id="cep" name="cep" required><br>
                 <label class="tag" for="estado">ESTADO</label><br>
-                <input class="preenchimento" type="text" id="estado" name="estado" required><br>
+                <input class="preenchimento" type="text" maxlength="50" id="estado" name="estado" required><br>
                 <label class="tag" for="cidade">CIDADE</label><br>
-                <input class="preenchimento" type="text" id="cidade" name="cidade" required><br>
+                <input class="preenchimento" type="text" maxlength="50" id="cidade" name="cidade" required><br>
                 <label class="tag" for="bairro">BAIRRO</label><br>
-                <input class="preenchimento" type="text" id="bairro" name="bairro" required><br>
+                <input class="preenchimento" type="text" maxlength="50" id="bairro" name="bairro" required><br>
                 <label class="tag" for="rua">RUA</label><br>
-                <input class="preenchimento" type="text" id="rua" name="rua"><br>
+                <input class="preenchimento" type="text" maxlength="50" id="rua" name="rua"><br>
                 <label class="tag" for="numero">NÚMERO</label><br>
-                <input class="preenchimento" type="text" id="numero" name="numero" required><br>
+                <input class="preenchimento" type="text" maxlength="50" id="numero" name="numero" required><br>
                 <label class="tag" for="commplemento">COMPLEMENTO</label><br>
                 <input class="preenchimento" type="text" id="complemento" name="complemento"><br>
                 <input class="botao" type="submit" value="Cadastrar endereço">
@@ -43,15 +43,15 @@
         <div style="float: left; width: 50%; display: flex; justify-content: center; align-items: center;">
             <form action="/cadastro_cartao" method="post">
                 <label class="tag" for="nome">NOME DO TITULAR</label><br>
-                <input class="preenchimento" type="text" id="nome" name="nome" required><br>
+                <input class="preenchimento" type="text" maxlength="50" id="nome" name="nome" required><br>
                 <label class="tag" for="cpf">CPF DO TITULAR</label><br>
-                <input class="preenchimento" type="number" id="cpf" name="cpf" required><br>
+                <input class="preenchimento" type="number" maxlength="11" id="cpf" name="cpf" required><br>
                 <label class="tag" for="numero">NÚMERO DO CARTÃO</label><br>
-                <input class="preenchimento" type="number" id="numero" name="numero" required><br>
+                <input class="preenchimento" type="number" maxlength="16" id="numero" name="numero" required><br>
                 <label class="tag" for="vencimento">VENCIMENTO</label><br>
                 <input class="preenchimento" type="date" id="vencimento" name="vencimento" required><br>
                 <label class="tag" for="cvv">CVV</label><br>
-                <input class="preenchimento" type="number" id="cvv" name="cvv"><br>
+                <input class="preenchimento" type="number" maxlength="3" id="cvv" name="cvv"><br>
                 <input class="botao" type="submit" value="Cadastrar cartão">
             </form>
         </div>

@@ -27,7 +27,7 @@
 
 </body>
 <script>
-    function fazerJogada(selecao) {
+    function ir_para_produto(selecao) {
         const form = document.createElement('form');
         form.method = 'post';
         form.action = '/produto';
@@ -35,7 +35,8 @@
         const hiddenField = document.createElement('input');
         hiddenField.type = 'hidden';
         hiddenField.name = 'produto_selecionado';
-        hiddenField.value = produto_selecionado;
+        hiddenField.id = 'produto_selecionado';
+        hiddenField.value = selecao;
 
         form.appendChild(hiddenField);
         document.body.appendChild(form);
