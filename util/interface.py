@@ -167,7 +167,6 @@ class Interface():
     def produto_especifico(self, produto_id):
         consulta = self.bd.produto_especifico(produto_id)[0]
         consulta = list(consulta)
-        print(consulta)
         consulta[5] = self.bd.consultar_imagem(consulta[0])[0][0]
 
         html = """
@@ -183,3 +182,64 @@ class Interface():
             </div>
         """.format(consulta[1], consulta[5], consulta[4], consulta[0], consulta[2], consulta[3])
         return html
+
+    def dados_compra(self, produto_id, id_usuario):
+        consulta = self.bd.produto_especifico(produto_id)[0]
+        consulta = list(consulta)
+        consulta[5] = self.bd.consultar_imagem(consulta[0])[0][0]
+
+        html = """<form action="/cadastro_compra" method="post">
+        <input type="number" id="produto" name="produto" value="{}" hidden>
+        <h3 class="titulo_home">{}</h3>
+        <image src="static/imagens_produtos/{}"><br>
+        <label class="tag" for="quantidade">QUANTIDADE</label><br>
+        <input class="preenchimento" type="number" id="quantidade" name="quantidade" value="1"><br>
+        <br><h4 class="preco_home">R${} cada</h4>
+        <br><p>Selecione o cartão que deseja utilizar</p>
+        <fieldset required>
+        """.format(consulta[0], consulta[1], consulta[5], consulta[4])
+
+        cartao = self.bd.consultar_cartao(id_usuario)
+        if cartao == []:
+            html += '<p>Não há cartões cadastrados</p>'
+        for i in range(len(cartao)):
+            cartao[i] = list(cartao[i])
+            cartao[i][1] = 'XXXX XXXX XXXX '+cartao[i][1][-4:]
+            html += """<input id="cartao" name="cartao" type="radio" value="{}">
+            <label>{}</label><br>""".format(cartao[i][0], cartao[i][1])
+        html += """</fieldset>
+        <br><p>Selecione o endereço que deseja receber sua encomenda</p>
+        <fieldset required>"""
+
+        endereco =  self.bd.consultar_endereco(id_usuario)
+        if endereco == []:
+            html += '<p>Não há endereços cadastrados</p>'
+        for i in range(len(endereco)):
+            endereco[i] = list(endereco[i])
+            html += """<input id="endereco" name="endereco" type="radio" value="{}">
+            <label>{}, {}, {}, {}, {}, {}</label><br>""".format(endereco[i][0], endereco[i][2], endereco[i][1], endereco[i][3], endereco[i][4], endereco[i][5], endereco[i][6])
+
+        html += """</fieldset><br>
+        <a class="botao_verde" href="/cadastrar_produto">+CADASTRAR NOVOS DADOS DE CARTÃO E ENDEREÇO</a><br>
+        <input class="botao" type="submit" value="CONFIRMAR COMPRA">
+        </form>"""
+        return html
+
+    def cadastro_compra(self, id_usuario, id_produto, quantidade, cartao, endereco):
+        valor_produto = self.bd.produto_especifico(id_produto)[0][4]
+        self.bd.cadastrar_compra(quantidade, float(quantidade)*float(valor_produto), id_usuario, cartao, endereco, id_produto)
+
+    def consultar_compras(self, id_usuario):
+        compras = self.bd.consultar_compras(id_usuario)
+
+        if compras==[]:
+            return "<p>Não foram realizadas compras ainda.</p>"
+
+        html = ""
+        for i in range(len(compras)):
+            compras[i] = list(compras[i])
+            cartao = 
+            endereco = 
+            nome_produto = 
+            imagem = 
+            total = 

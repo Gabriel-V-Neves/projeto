@@ -45,9 +45,22 @@ def produto():
 	return render_template("produto.html", produto=produto)
 
     
-@app.route('/compra')
+@app.route('/compra', methods=['GET', 'POST'])
 def compra():
-	return render_template("compra.html")
+	produto = request.form['compra_produto']
+	id_usuario = session['id_usuario']
+	dados_compra = back.dados_compra(produto, id_usuario)
+	return render_template("compra.html", dados_compra=dados_compra)
+
+@app.route('/cadastro_compra', methods=['GET', 'POST'])
+def cadastro_compra():
+	id_usuario = session['id_usuario']
+	id_produto = request.form['produto']
+	quantidade = request.form['quantidade']
+	cartao = request.form['cartao']
+	endereco = request.form['endereco']
+	back.cadastro_compra(id_usuario, id_produto, quantidade, cartao, endereco)
+	return redirect('/minhas_compras')
 
 @app.route('/meus_dados')
 def meus_dados():
@@ -80,7 +93,9 @@ def cadastro_cartao():
 
 @app.route('/minhas_compras')
 def minhas_compras():
-	return render_template("minhas_compras.html")
+	id_usuario = session['id_usuario']
+	compras = back.consultar_compras(id_usuario)
+	return render_template("minhas_compras.html", compras=compras)
 
 @app.route('/produtos_cadastrados')
 def produtos_cadastrados():

@@ -26,4 +26,21 @@
     <div class="footer"></div>
 
 </body>
+<script>
+        function pagina_compra(produto) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/compra';
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'compra_produto';
+        hiddenField.id = 'compra_produto';
+        hiddenField.value = produto;
+
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </html>
