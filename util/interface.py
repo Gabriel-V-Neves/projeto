@@ -238,8 +238,12 @@ class Interface():
         html = ""
         for i in range(len(compras)):
             compras[i] = list(compras[i])
-            cartao = 
-            endereco = 
+            id_cartao = compras[i][4]
+            num_cartao = self.bd.cartao_especifico(id_cartao)
+            id_endereco = compras[i][5]
+            endereco = self.bd.cartao_especifico(id_endereco)
+            id_produto = compras[i][5]
+            produto = self.bd.produto_especifico(id_produto)
             nome_produto = 
-            imagem = 
-            total = 
+            imagem = self.bd.consultar_imagem(id_produto)[0][0]
+            total = compras[i][2]
