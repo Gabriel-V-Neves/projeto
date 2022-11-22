@@ -77,7 +77,6 @@ class Interface():
             consulta[i] = list(consulta[i])
         
         html = ""
-        j = 0
         for i in consulta:
             html += """
                 <tr>
@@ -89,8 +88,7 @@ class Interface():
                     <th>{}</th>
                     <th><button class="botao_vermelho" onclick="remover_endereco({})">remover</button></th>
                 </tr>
-            """.format(i[3], i[4], i[5], i[2], i[1], i[6], j)
-            j += 1
+            """.format(i[3], i[4], i[5], i[2], i[1], i[6], i[0])
         return html
     
     def cadastrar_cartao(self, numero, nome, cpf, vencimento, cvv, usuario):
@@ -105,16 +103,20 @@ class Interface():
             consulta[i][1] = 'XXXX XXXX XXXX '+consulta[i][1][-4:]
 
         html = ""
-        j = 0
         for i in consulta:
             html += """
                 <tr>
                     <th>{}</th>
                     <th><button class="botao_vermelho" onclick="remover_cartao({})">remover</button></th>
                 </tr>
-            """.format(i[1], j)
-            j += 1
+            """.format(i[1], i[0])
         return html
+    
+    def remover_endereco(self, id_endereco):
+        self.bd.remover_endereco(id_endereco)
+
+    def remover_cartao(self, id_cartao):
+        self.bd.remover_cartao(id_cartao)
     
     def cadastrar_compra(self, quantidade, valor, id_usuario, id_cartao, id_endereco, id_produto):
         self.bd.cadastrar_compra(quantidade, quantidade*valor, id_usuario, id_cartao, id_endereco, id_produto)
@@ -129,10 +131,9 @@ class Interface():
             return '<p>Não há produtos cadastrados.</p>'
         for i in range(len(consulta)):
             consulta[i] = list(consulta[i])
-            consulta[i][0] = self.bd.consultar_imagem(consulta[i][0])[0][0]
+            consulta[i][2] = self.bd.consultar_imagem(consulta[i][0])[0][0]
 
         html = ""
-        j = 0
         for i in consulta:
             html += """
                 <div class="produto_home">
@@ -141,8 +142,7 @@ class Interface():
                     <button class="botao_verde" onclick="editar_produto({})">EDITAR</button>
                     <button class="botao_vermelho" onclick="remover_produto({})">REMOVER</button>
                 </div>
-            """.format(i[0], i[1], j, j)
-            j += 1
+            """.format(i[2], i[1], i[0], i[0])
         return html
 
     def consultar_todos_produtos(self):
@@ -238,12 +238,44 @@ class Interface():
         html = ""
         for i in range(len(compras)):
             compras[i] = list(compras[i])
-            id_cartao = compras[i][4]
-            num_cartao = self.bd.cartao_especifico(id_cartao)
-            id_endereco = compras[i][5]
-            endereco = self.bd.cartao_especifico(id_endereco)
             id_produto = compras[i][5]
-            produto = self.bd.produto_especifico(id_produto)
-            nome_produto = 
+            produto = self.bd.produto_especifico(id_produto)[0]
+            nome_produto = produto[1]
             imagem = self.bd.consultar_imagem(id_produto)[0][0]
             total = compras[i][2]
+
+            html += """
+            <div class="produto_home">
+                <h3 class="titulo_home" style="margin-top:0">{}</h3>
+                <image src="static/imagens_produtos/{}">
+                <h4 class="preco_home">R${}</h4><br>
+                <button class="botao_verde">RASTREAR</button>
+                <button class="botao_verde">AVALIAR</button>
+                </div>""".format(nome_produto, imagem, total)
+        
+        return html
+
+    def consultar_vendas(self, id_usuario):
+        vendas = self.bd.consultar_vendas(id_usuario)
+
+        if vendas==[]:
+            return "<p>Não foram realizadas compras ainda.</p>"
+
+        html = ""
+        for i in range(len(vendas)):
+            vendas[i] = list(vendas[i])
+            id_produto = vendas[i][5]
+            produto = self.bd.produto_especifico(id_produto)[0]
+            nome_produto = produto[1]
+            imagem = self.bd.consultar_imagem(id_produto)[0][0]
+            total = vendas[i][2]
+
+            html += """
+            <div class="produto_home">
+                <h3 class="titulo_home" style="margin-top:0">{}</h3>
+                <image src="static/imagens_produtos/{}">
+                <h4 class="preco_home">R${}</h4><br>
+                <button class="botao_verde">ORIENTAÇÕES DE ENVIO</button>
+                </div>""".format(nome_produto, imagem, total)
+        
+        return html

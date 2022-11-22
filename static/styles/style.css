@@ -21,6 +21,7 @@ body{
     background-color: #f4c440;
     float: left;
     padding-left: 10%;
+    padding-right: 10%;
     overflow: hidden;
     width: 90%;
     position: sticky;

@@ -69,4 +69,39 @@
     <div class="footer"></div>
 
 </body>
+<script>
+    function remover_endereco(id_endereco) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/remover_endereco';
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'id_endereco';
+        hiddenField.id = 'id_endereco';
+        hiddenField.value = id_endereco;
+
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function remover_cartao(id_cartao) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/remover_cartao';
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'id_cartao';
+        hiddenField.id = 'id_cartao';
+        hiddenField.value = id_cartao;
+
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+
+</script>
 </html>

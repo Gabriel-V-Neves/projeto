@@ -21,6 +21,12 @@
         <a href="/vendas_feitas">Vendas feitas</a>
     </div>
     <div class="conteudo">
+        <div style="margin-bottom: 2em;">
+            <form action="/pesquisa" method="post">
+                <input class="preenchimento" type="text" maxlength="50" id="pesquisa" name="pesquisa" required>
+                <input class="botao_branco" type="submit" value="PESQUISAR">
+            </form>
+        </div>
         {{produtos|safe}}
     </div>
     <div class="footer"></div>

@@ -202,6 +202,10 @@ class Database():
         sql = "SELECT * FROM compra WHERE usuario=%s"
         return self.consultar(sql, (id_usuario,))
 
+    def consultar_vendas(self, id_usuario):
+        sql = "SELECT * FROM compra JOIN produto ON compra.produto=produto.id_produto WHERE produto.vendedor=%s"
+        return self.consultar(sql, (id_usuario,))
+
     def consultar_avaliacao(self, id_compra):
         sql = "SELECT * FROM avaliacao WHERE compra=%s"
         return self.consultar(sql, (id_compra,))
@@ -220,7 +224,7 @@ class Database():
         sql = "UPDATE endereco SET estado=%s, cidade=%s, bairro=%s, rua=%s, numero=%s, cep=%s, usuario=%s WHERE id_endereco=%s;"
         self.executar(sql, (estado, cidade, bairro, rua, numero, cep, usuario, id_endereco))
 
-    def remover_produto(self, id_produto, nome, descricao, ficha_tecnica, valor, estoque, vendedor):
+    def atualizar_produto(self, id_produto, nome, descricao, ficha_tecnica, valor, estoque, vendedor):
         sql = "UPDATE produto SET nome=%s, descricao=%s, ficha_tecnica=%s, valor=%s, estoque=%s, vendedor=%s WHERE id_produto=%s;"
         self.executar(sql, (nome, descricao, ficha_tecnica, valor, estoque, vendedor, id_produto))
 
@@ -228,16 +232,16 @@ class Database():
     # remoções
     def remover_sessao(self, ip, usuario):
         sql = "DELETE FROM sessao WHERE ip=%s AND usuario=%s;"
-        self.executar(sql, (ip, usuario))
+        self.executar(sql, (ip, usuario,))
 
     def remover_cartao(self, id_cartao):
         sql = "DELETE FROM cartao WHERE id_cartao=%s;"
-        self.executar(sql, (id_cartao))
+        self.executar(sql, (id_cartao,))
 
     def remover_endereco(self, id_endereco):
         sql = "DELETE FROM endereco WHERE id_endereco=%s;"
-        self.executar(sql, (id_endereco))
+        self.executar(sql, (id_endereco,))
 
     def remover_produto(self, id_produto):
         sql = "DELETE FROM produto WHERE id_produto=%s;"
-        self.executar(sql, (id_produto))
+        self.executar(sql, (id_produto,))

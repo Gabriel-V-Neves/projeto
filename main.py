@@ -91,6 +91,18 @@ def cadastro_cartao():
 	back.cadastrar_cartao(numero, nome, cpf, vencimento, cvv, session['id_usuario'])
 	return redirect('meus_dados')
 
+@app.route('/remover_endereco', methods=['GET', 'POST'])
+def remover_endereco():
+	endereco = request.form['id_endereco']
+	back.remover_endereco(endereco)
+	return redirect('meus_dados')
+
+@app.route('/remover_cartao', methods=['GET', 'POST'])
+def remover_cartao():
+	cartao = request.form['id_cartao']
+	back.remover_cartao(cartao)
+	return redirect('meus_dados')
+
 @app.route('/minhas_compras')
 def minhas_compras():
 	id_usuario = session['id_usuario']
@@ -105,7 +117,9 @@ def produtos_cadastrados():
     
 @app.route('/vendas_feitas')
 def vendas_feitas():
-	return render_template("vendas_feitas.html")
+	id_usuario = session['id_usuario']
+	vendas = back.consultar_vendas(id_usuario)
+	return render_template("vendas_feitas.html", vendas=vendas)
 
 @app.route('/cadastrar_produto')
 def cadastrar_produto():
@@ -118,9 +132,7 @@ def cadastro_produto():
 	ficha_tecnica = request.form['ficha_tecnica']
 	valor = request.form['valor']
 	estoque = request.form['estoque']
-	#imagem_nome = request.form['imagem']
 	imagem = request.files['imagem']
-	print(imagem)
 	vendedor = session['id_usuario']
 	cadastro = back.cadastrar_produto(nome, descricao, ficha_tecnica, valor, estoque, imagem, vendedor)
 	
