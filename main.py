@@ -149,3 +149,5 @@ def cadastro_produto():
 			return redirect('/produtos_cadastrados')'''
 	return redirect('/cadastrar_produto')
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
