@@ -7,7 +7,7 @@ import os
 
 class Interface():
     def __init__(self):
-        self.bd = Database('root', '99227512Biel*', 'localhost', 'projeto') #12345678
+        self.bd = Database('root', '12345678', 'localhost', 'projeto') #12345678
 
     def cadastrar_usuario(self, nome, nasci, email, senha):
         consulta = self.bd.consultar_usuario(email)
