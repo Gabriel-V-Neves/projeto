@@ -30,6 +30,7 @@ def cadastro():
 	if cadastro:
 		num_ip = request.environ['REMOTE_ADDR']
 		back.criar_sessao(num_ip, cadastro[0])
+		session['id_usuario'] = cadastro[0]
 		return redirect('/home')
 	return redirect('/')
 
