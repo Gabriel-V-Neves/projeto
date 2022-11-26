@@ -18,10 +18,11 @@ def login():
 	email = request.form['email']
 	senha = request.form['senha']
 	num_ip = request.environ['REMOTE_ADDR']
-	usuario = back.login(email, senha, num_ip)
-	if usuario:
+	valido, usuario = back.login(email, senha, num_ip)
+	if valido:
 		session['id_usuario'] = usuario
 		return redirect('/home')
+	session['alerta'] = usuario
 	return redirect('/')
 
 @app.route('/cadastro', methods=['GET', 'POST'])
@@ -37,17 +38,24 @@ def cadastro():
 		session['id_usuario'] = cadastro[0]
 		return redirect('/home')
 	session['alerta'] = cadastro
-	print(session['alerta'])
 	return redirect('/')
 
 @app.route('/home')
 def home():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+
 	id_usuario = session['id_usuario']
 	produtos = back.consultar_todos_produtos(id_usuario)
 	return render_template("home.html", produtos=produtos)
 
 @app.route('/pesquisa', methods=['GET', 'POST'])
 def pesquisa():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+
 	pesquisa = request.form['pesquisa']
 	id_usuario = session['id_usuario']
 	produtos = back.pesquisa_produtos(pesquisa, id_usuario)
@@ -55,6 +63,10 @@ def pesquisa():
 
 @app.route('/produto', methods=['GET', 'POST'])
 def produto():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	produto_selecionado = request.form['produto_selecionado']
 	produto = back.produto_especifico(produto_selecionado)
 	return render_template("produto.html", produto=produto)
@@ -62,6 +74,10 @@ def produto():
     
 @app.route('/compra', methods=['GET', 'POST'])
 def compra():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	if session.get('ultimo_produto_observado') and session['ultimo_produto_observado']!="":
 		produto = session['ultimo_produto_observado']
 	else:
@@ -73,6 +89,10 @@ def compra():
 
 @app.route('/cadastro_compra', methods=['GET', 'POST'])
 def cadastro_compra():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	session['ultimo_produto_observado'] = ""
 	id_usuario = session['id_usuario']
 	id_produto = request.form['produto']
@@ -84,6 +104,10 @@ def cadastro_compra():
 
 @app.route('/meus_dados')
 def meus_dados():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	id_usuario = session['id_usuario']
 	enderecos = back.consultar_endereco(id_usuario)
 	cartoes = back.consultar_cartao(id_usuario)
@@ -93,6 +117,10 @@ def meus_dados():
 
 @app.route('/cadastro_endereco', methods=['GET', 'POST'])
 def cadastro_endereco():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	cep = request.form['cep']
 	estado = request.form['estado']
 	cidade = request.form['cidade']
@@ -105,6 +133,10 @@ def cadastro_endereco():
 
 @app.route('/cadastro_cartao', methods=['GET', 'POST'])
 def cadastro_cartao():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	nome = request.form['nome']
 	cpf = request.form['cpf']
 	numero = request.form['numero']
@@ -115,40 +147,68 @@ def cadastro_cartao():
 
 @app.route('/remover_endereco', methods=['GET', 'POST'])
 def remover_endereco():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	endereco = request.form['id_endereco']
 	back.remover_endereco(endereco)
 	return redirect('meus_dados')
 
 @app.route('/remover_cartao', methods=['GET', 'POST'])
 def remover_cartao():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	cartao = request.form['id_cartao']
 	back.remover_cartao(cartao)
 	return redirect('meus_dados')
 
 @app.route('/minhas_compras')
 def minhas_compras():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	id_usuario = session['id_usuario']
 	compras = back.consultar_compras(id_usuario)
 	return render_template("minhas_compras.html", compras=compras)
 
 @app.route('/produtos_cadastrados')
 def produtos_cadastrados():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	id_usuario = session['id_usuario']
 	produtos = back.consultar_produtos(id_usuario)
 	return render_template("produtos_cadastrados.html", produtos=produtos)
     
 @app.route('/vendas_feitas')
 def vendas_feitas():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	id_usuario = session['id_usuario']
 	vendas = back.consultar_vendas(id_usuario)
 	return render_template("vendas_feitas.html", vendas=vendas)
 
 @app.route('/cadastrar_produto')
 def cadastrar_produto():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	return render_template("cadastrar_produto.html")
 
 @app.route('/cadastro_produto', methods=['GET', 'POST'])
 def cadastro_produto():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	nome = request.form['nome']
 	descricao = request.form['descricao']
 	ficha_tecnica = request.form['ficha_tecnica']
@@ -165,12 +225,20 @@ def cadastro_produto():
 
 @app.route('/editar_produto', methods=['GET', 'POST'])
 def editar_produto():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	id_produto = request.form['produto_selecionado']
 	formulario = back.formulario_edicao(id_produto)
 	return render_template("editar_produto.html", formulario=formulario)
 
 @app.route('/edicao_produto', methods=['GET', 'POST'])
 def edicao_produto():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	nome = request.form['nome']
 	descricao = request.form['descricao']
 	ficha_tecnica = request.form['ficha_tecnica']
@@ -187,6 +255,10 @@ def edicao_produto():
 
 @app.route('/remover_produto', methods=['GET', 'POST'])
 def remover_produto():
+	if not session.get('id_usuario') or not back.sessao_valida(request.environ['REMOTE_ADDR'], session['id_usuario']):
+		session['alerta'] = "Por favor, entre na sua conta com email e senha ou faça o seu cadastro."
+		return redirect('/')
+	
 	id_produto = request.form['produto_selecionado']
 	back.remover_produto(id_produto)
 	return redirect('/produtos_cadastrados')

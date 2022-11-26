@@ -22,7 +22,7 @@ class Interface():
     
     def sessao_valida(self, ip, usuario):
         consulta = self.bd.consultar_sessao(ip, usuario)[0] #[id_sessao, ip, ultimo_acesso, usuario]
-        if consulta==1 and consulta[1]==ip and consulta[3]==usuario:
+        if len(consulta)!=1 and consulta[1]==ip and consulta[3]==usuario:
             hora_acesso = datetime.datetime.now()
             if (consulta[2] - hora_acesso).total_seconds() < 3600: # verificar se não passou 1h
                 self.bd.atualizar_sessao(consulta[0], hora_acesso)
@@ -34,8 +34,8 @@ class Interface():
         consulta = self.bd.consultar_usuario(email) #[id, nome, email, senha, nasci]
         if consulta!=[] and consulta[0][2]==email and self.comparar_senha(senha, consulta[0][3]): #adicionar validador
             self.criar_sessao(ip, consulta[0][0])
-            return consulta[0][0]
-        return False
+            return True, consulta[0][0]
+        return False, "Email e/ou senha informados incorretos."
 
     def logout(self, ip, usuario):
         try:
