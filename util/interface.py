@@ -7,14 +7,14 @@ import os
 
 class Interface():
     def __init__(self):
-        self.bd = Database('root', '12345678', 'localhost', 'projeto') #12345678
+        self.bd = Database('root', '99227512Biel*', 'localhost', 'projeto') #12345678
 
     def cadastrar_usuario(self, nome, nasci, email, senha):
         consulta = self.bd.consultar_usuario(email)
         if len(consulta)==0: #validar
             self.bd.cadastrar_usuario(nome, email, self.critografar(senha), nasci)
-            return self.bd.consultar_usuario(email)[0]
-        return False
+            return True, self.bd.consultar_usuario(email)[0]
+        return False, "Email '{}' já cadastradado".format(email)
 
     def criar_sessao(self, ip, usuario):
         hora_acesso = datetime.datetime.now()
@@ -61,6 +61,44 @@ class Interface():
             return True
 
         return False
+    
+    def formulario_edicao(self, id_produto):
+        consulta = self.bd.produto_especifico(id_produto)[0]
+        id_produto, nome, descricao, ficha_tec, valor, estoque, vendedor = list(consulta)
+        dir_imagem = self.bd.consultar_imagem(consulta[0])[0][0]
+
+        html = """
+                        <label class="tag" for="nome">NOME</label><br>
+                <input value="{}" class="preenchimento" type="text" maxlength="50" id="nome" name="nome" required><br>
+                <label class="tag" for="descricao">DESCRIÇÃO</label><br>
+                <textarea class="preenchimento" maxlength="500" id="descricao" name="descricao" required>{}</textarea><br>
+                <label class="tag" for="ficha_tecnica">FICHA TÉCNICA</label><br>
+                <textarea class="preenchimento" maxlength="500" id="ficha_tecnica" name="ficha_tecnica" required>{}</textarea><br>
+                <label class="tag" for="valor">VALOR</label><br>
+                <input value="{}" class="preenchimento" type="number" step=".01" id="valor" name="valor" required><br>
+                <label class="tag" for="estoque">ESTOQUE</label><br>
+                <input value="{}" class="preenchimento" type="number" id="estoque" name="estoque"><br>
+                <label class="tag" for="imagem">IMAGEM</label><br>
+                <image src="static/imagens_produtos/{}" style="width:5em;height:5em;">
+                <input class="preenchimento" type="file" accept="image/*" id="imagem" name="imagem"><br>
+                <p>OBS: Caso não seja inserida nenhuma imagem, será mantida a anterior.</p><br>
+                <input value="{}" type="number" id="id_produto" name="id_produto" style="display: none;">
+                <input class="botao" type="submit" value="Concluir edição">
+        """.format(nome, descricao, ficha_tec, valor, estoque, dir_imagem, id_produto)
+        return html
+
+    def editar_produto(self, nome, descricao, ficha_tecnica, valor, estoque, imagem, id_produto, vendedor):
+        self.bd.atualizar_produto(id_produto, nome, descricao, ficha_tecnica, valor, estoque)
+
+        if imagem != "" and self.arquivo_permitido(imagem.filename):
+            self.bd.remover_imagem(id_produto)
+            nome_imagem = str(vendedor)+"--"+str(id_produto)+"--"+str(datetime.datetime.now()).replace(" ","")+'.'+imagem.filename.rsplit('.', 1)[1].lower()
+            print("cumprimento nome_imagem: ", len(nome_imagem))
+            imagem.save(os.path.join('static/imagens_produtos', nome_imagem))
+            self.bd.cadastrar_imagem(nome_imagem, id_produto)
+    
+    def remover_produto(self, id_produto):
+        self.bd.remover_produto(id_produto)
  
     def arquivo_permitido(self, filename):
         extensoes_permitidas = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
@@ -131,6 +169,7 @@ class Interface():
             return '<p>Não há produtos cadastrados.</p>'
         for i in range(len(consulta)):
             consulta[i] = list(consulta[i])
+            print(self.bd.consultar_imagem(consulta[i][0]))
             consulta[i][2] = self.bd.consultar_imagem(consulta[i][0])[0][0]
 
         html = ""
@@ -145,8 +184,8 @@ class Interface():
             """.format(i[2], i[1], i[0], i[0])
         return html
 
-    def consultar_todos_produtos(self):
-        consulta = self.bd.consultar_todos_produtos()
+    def consultar_todos_produtos(self, id_usuario):
+        consulta = self.bd.consultar_todos_produtos(id_usuario)
         if consulta == []:
             return '<p>Não há produtos cadastrados.</p>'
         for i in range(len(consulta)):
@@ -164,6 +203,25 @@ class Interface():
             """.format(i[0], i[2], i[1], i[4])
         return html
 
+    def pesquisa_produtos(self, pesquisa, id_usuario):
+        consulta = self.bd.pesquisa_produtos(pesquisa, id_usuario)
+        if consulta == []:
+            return '<p>Nada encontrado.</p>'
+        for i in range(len(consulta)):
+            consulta[i] = list(consulta[i])
+            consulta[i][2] = self.bd.consultar_imagem(consulta[i][0])[0][0]
+
+        html = ""
+        for i in consulta:
+            html += """
+                <div class="produto_home" onclick="ir_para_produto({})">
+                    <image src="static/imagens_produtos/{}">
+                    <h3 class="titulo_home">{}</h3>
+                    <h4 class="preco_home">R${}</h4>
+                </div>
+            """.format(i[0], i[2], i[1], i[4])
+        return html
+    
     def produto_especifico(self, produto_id):
         consulta = self.bd.produto_especifico(produto_id)[0]
         consulta = list(consulta)
@@ -175,6 +233,8 @@ class Interface():
                 <image src="static/imagens_produtos/{}">
                 <h4 class="preco_home">R${}</h4>
                 <button class="botao_verde" onclick="pagina_compra({})">COMPRAR</button>
+            </div>
+            <div style="margin-top: 2em;">
                 <h4>Descrição</h4>
                 <p>{}</p>
                 <h4>Ficha Técnica</h4>
@@ -220,7 +280,7 @@ class Interface():
             <label>{}, {}, {}, {}, {}, {}</label><br>""".format(endereco[i][0], endereco[i][2], endereco[i][1], endereco[i][3], endereco[i][4], endereco[i][5], endereco[i][6])
 
         html += """</fieldset><br>
-        <a class="botao_verde" href="/cadastrar_produto">+CADASTRAR NOVOS DADOS DE CARTÃO E ENDEREÇO</a><br>
+        <a class="botao_verde" href="/meus_dados">+CADASTRAR NOVOS DADOS DE CARTÃO E ENDEREÇO</a><br>
         <input class="botao" type="submit" value="CONFIRMAR COMPRA">
         </form>"""
         return html
@@ -238,20 +298,24 @@ class Interface():
         html = ""
         for i in range(len(compras)):
             compras[i] = list(compras[i])
-            id_produto = compras[i][5]
+            id_produto = compras[i][6]
             produto = self.bd.produto_especifico(id_produto)[0]
             nome_produto = produto[1]
             imagem = self.bd.consultar_imagem(id_produto)[0][0]
+            quantidade = compras[i][1]
             total = compras[i][2]
+            valor_uni = float(total)/float(quantidade)
 
             html += """
             <div class="produto_home">
                 <h3 class="titulo_home" style="margin-top:0">{}</h3>
                 <image src="static/imagens_produtos/{}">
+                <p>Valor unitário: R${}</p>
+                <p>Quantidade: {}</p>
                 <h4 class="preco_home">R${}</h4><br>
                 <button class="botao_verde">RASTREAR</button>
                 <button class="botao_verde">AVALIAR</button>
-                </div>""".format(nome_produto, imagem, total)
+                </div>""".format(nome_produto, imagem, valor_uni, quantidade, total)
         
         return html
 
@@ -259,12 +323,12 @@ class Interface():
         vendas = self.bd.consultar_vendas(id_usuario)
 
         if vendas==[]:
-            return "<p>Não foram realizadas compras ainda.</p>"
+            return "<p>Não foram realizadas vendas ainda.</p>"
 
         html = ""
         for i in range(len(vendas)):
             vendas[i] = list(vendas[i])
-            id_produto = vendas[i][5]
+            id_produto = vendas[i][6]
             produto = self.bd.produto_especifico(id_produto)[0]
             nome_produto = produto[1]
             imagem = self.bd.consultar_imagem(id_produto)[0][0]

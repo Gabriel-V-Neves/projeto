@@ -53,5 +53,12 @@
 
 senha1.onchange = validar_senha;
 senha2.onkeyup = validar_senha;
+
+document.addEventListener('DOMContentLoaded', function() {
+    alerta = "{{alerta|safe}}"
+    if (alerta!="") {
+        alert(alerta);
+    };
+}, false);
 </script>
 </html>

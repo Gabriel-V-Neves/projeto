@@ -190,9 +190,14 @@ class Database():
         sql = "SELECT * FROM produto WHERE id_produto=%s"
         return self.consultar(sql, (id_produto,))
         
-    def consultar_todos_produtos(self):
-        sql = "SELECT * FROM produto"
-        return self.consultar(sql, ())
+    def consultar_todos_produtos(self, id_usuario):
+        sql = "SELECT * FROM produto WHERE vendedor != %s"
+        return self.consultar(sql, (id_usuario,))
+
+    def pesquisa_produtos(self, pesquisa, id_usuario):
+        sql = "SELECT * FROM produto WHERE (nome like %s OR descricao like %s OR ficha_tecnica like %s) and vendedor != %s"
+        pesquisa = '%'+pesquisa+'%'
+        return self.consultar(sql, (pesquisa, pesquisa, pesquisa, id_usuario))
 
     def consultar_imagem(self, id_usuario):
         sql = "SELECT diretorio FROM imagem WHERE produto=%s"
@@ -224,9 +229,9 @@ class Database():
         sql = "UPDATE endereco SET estado=%s, cidade=%s, bairro=%s, rua=%s, numero=%s, cep=%s, usuario=%s WHERE id_endereco=%s;"
         self.executar(sql, (estado, cidade, bairro, rua, numero, cep, usuario, id_endereco))
 
-    def atualizar_produto(self, id_produto, nome, descricao, ficha_tecnica, valor, estoque, vendedor):
-        sql = "UPDATE produto SET nome=%s, descricao=%s, ficha_tecnica=%s, valor=%s, estoque=%s, vendedor=%s WHERE id_produto=%s;"
-        self.executar(sql, (nome, descricao, ficha_tecnica, valor, estoque, vendedor, id_produto))
+    def atualizar_produto(self, id_produto, nome, descricao, ficha_tecnica, valor, estoque):
+        sql = "UPDATE produto SET nome=%s, descricao=%s, ficha_tecnica=%s, valor=%s, estoque=%s WHERE id_produto=%s;"
+        self.executar(sql, (nome, descricao, ficha_tecnica, valor, estoque, id_produto))
 
     
     # remoções
@@ -244,4 +249,8 @@ class Database():
 
     def remover_produto(self, id_produto):
         sql = "DELETE FROM produto WHERE id_produto=%s;"
+        self.executar(sql, (id_produto,))
+
+    def remover_imagem(self, id_produto):
+        sql = "DELETE FROM imagem WHERE produto=%s;"
         self.executar(sql, (id_produto,))

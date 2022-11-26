@@ -23,8 +23,42 @@
     <div class="conteudo">
         <a class="botao_verde" href="/cadastrar_produto">+ CADASTRAR NOVOS PRODUTOS</a><br>
         {{produtos|safe}}
+        <br><p>OBS: Os produtos cadastrados por você não aparecerão nas suas pesquisas.</p>
     </div>
     <div class="footer"></div>
 
 </body>
+<script>
+    function editar_produto(selecao) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/editar_produto';
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'produto_selecionado';
+        hiddenField.id = 'produto_selecionado';
+        hiddenField.value = selecao;
+
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function remover_produto(selecao) {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/remover_produto';
+
+        const hiddenField = document.createElement('input');
+        hiddenField.type = 'hidden';
+        hiddenField.name = 'produto_selecionado';
+        hiddenField.id = 'produto_selecionado';
+        hiddenField.value = selecao;
+
+        form.appendChild(hiddenField);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </html>

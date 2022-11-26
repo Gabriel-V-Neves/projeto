@@ -21,6 +21,7 @@
         <a href="/vendas_feitas">Vendas feitas</a>
     </div>
     <div class="conteudo">
+        <a class="botao_verde" href="/compra" id="volta_produto" style="display: none;">VOLTAR AO ÚLTIMO PRODUTO OBSERVADO</a><br><br>
         <div style="float: left; width: 50%; display: flex; justify-content: center; align-items: center;">
             <form action="/cadastro_endereco" method="post">
                 <label class="tag" for="cep">CEP</label><br>
@@ -102,6 +103,11 @@
         form.submit();
     }
 
-
+    document.addEventListener('DOMContentLoaded', function() {
+        produto = "{{ultimo_produto_observado|safe}}"
+        if (produto!="") {
+            document.getElementById('volta_produto').style.display = '';
+    };
+}, false);
 </script>
 </html>

@@ -7,7 +7,11 @@ app.secret_key = 'super secret key'
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-	return render_template("index.html")
+	if session.get('alerta') and session['alerta'] != "":
+		alerta = session['alerta']
+		session['alerta'] = ""
+		return render_template("index.html", alerta=alerta)
+	return render_template("index.html", alerta="")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -26,17 +30,27 @@ def cadastro():
 	nasci = request.form['_nasci']
 	email = request.form['_email']
 	senha = request.form['_senha']
-	cadastro = back.cadastrar_usuario(nome, nasci, email, senha)
-	if cadastro:
+	valido, cadastro = back.cadastrar_usuario(nome, nasci, email, senha)
+	if valido:
 		num_ip = request.environ['REMOTE_ADDR']
 		back.criar_sessao(num_ip, cadastro[0])
 		session['id_usuario'] = cadastro[0]
 		return redirect('/home')
+	session['alerta'] = cadastro
+	print(session['alerta'])
 	return redirect('/')
 
 @app.route('/home')
-def menu():
-	produtos = back.consultar_todos_produtos()
+def home():
+	id_usuario = session['id_usuario']
+	produtos = back.consultar_todos_produtos(id_usuario)
+	return render_template("home.html", produtos=produtos)
+
+@app.route('/pesquisa', methods=['GET', 'POST'])
+def pesquisa():
+	pesquisa = request.form['pesquisa']
+	id_usuario = session['id_usuario']
+	produtos = back.pesquisa_produtos(pesquisa, id_usuario)
 	return render_template("home.html", produtos=produtos)
 
 @app.route('/produto', methods=['GET', 'POST'])
@@ -48,13 +62,18 @@ def produto():
     
 @app.route('/compra', methods=['GET', 'POST'])
 def compra():
-	produto = request.form['compra_produto']
+	if session.get('ultimo_produto_observado') and session['ultimo_produto_observado']!="":
+		produto = session['ultimo_produto_observado']
+	else:
+		produto = request.form['compra_produto']
+		session['ultimo_produto_observado'] = produto
 	id_usuario = session['id_usuario']
 	dados_compra = back.dados_compra(produto, id_usuario)
 	return render_template("compra.html", dados_compra=dados_compra)
 
 @app.route('/cadastro_compra', methods=['GET', 'POST'])
 def cadastro_compra():
+	session['ultimo_produto_observado'] = ""
 	id_usuario = session['id_usuario']
 	id_produto = request.form['produto']
 	quantidade = request.form['quantidade']
@@ -68,7 +87,9 @@ def meus_dados():
 	id_usuario = session['id_usuario']
 	enderecos = back.consultar_endereco(id_usuario)
 	cartoes = back.consultar_cartao(id_usuario)
-	return render_template("meus_dados.html", enderecos=enderecos, cartoes=cartoes)
+	if session.get('ultimo_produto_observado'):
+		return render_template("meus_dados.html", enderecos=enderecos, cartoes=cartoes, ultimo_produto_observado=session['ultimo_produto_observado'])	
+	return render_template("meus_dados.html", enderecos=enderecos, cartoes=cartoes, ultimo_produto_observado="")
 
 @app.route('/cadastro_endereco', methods=['GET', 'POST'])
 def cadastro_endereco():
@@ -140,15 +161,35 @@ def cadastro_produto():
 	if cadastro:
 		return redirect('/produtos_cadastrados')
 
-	'''
-	if imagem and arquivo_permitido(imagem.filename):
-		cadastro = back.cadastrar_produto() #terminar
-		if cadastro:
-			nome_imagem = #id_usuario-id_produto-datetime
-			imagem.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_imagem))
-			#cadastrar url da imagem
-			return redirect('/produtos_cadastrados')'''
 	return redirect('/cadastrar_produto')
+
+@app.route('/editar_produto', methods=['GET', 'POST'])
+def editar_produto():
+	id_produto = request.form['produto_selecionado']
+	formulario = back.formulario_edicao(id_produto)
+	return render_template("editar_produto.html", formulario=formulario)
+
+@app.route('/edicao_produto', methods=['GET', 'POST'])
+def edicao_produto():
+	nome = request.form['nome']
+	descricao = request.form['descricao']
+	ficha_tecnica = request.form['ficha_tecnica']
+	valor = request.form['valor']
+	estoque = request.form['estoque']
+	if 'imagem' not in request.files or request.files['imagem'].filename == "":
+		imagem = ""
+	else:
+		imagem = request.files['imagem']
+	vendedor = session['id_usuario']
+	back.editar_produto(nome, descricao, ficha_tecnica, valor, estoque, imagem, vendedor, vendedor)
+	
+	return redirect('/produtos_cadastrados')
+
+@app.route('/remover_produto', methods=['GET', 'POST'])
+def remover_produto():
+	id_produto = request.form['produto_selecionado']
+	back.remover_produto(id_produto)
+	return redirect('/produtos_cadastrados')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
